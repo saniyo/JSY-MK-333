@@ -2,7 +2,7 @@
 #define JSYMK333_H
 
 #include <Arduino.h>
-#include <ModbusRTU.h>
+#include <HardwareSerial.h>
 
 class JSYMK333 {
 public:
@@ -49,7 +49,6 @@ public:
     uint16_t readAlarmStatus();
 
 private:
-    ModbusRTU mb;
     HardwareSerial& serial;
     int baud;
     uint8_t config;
@@ -58,6 +57,12 @@ private:
 
     float readSingleRegister(uint16_t address, float factor);
     float readDoubleRegister(uint16_t address, float factor);
+
+    bool sendCmd8(uint8_t cmd, uint16_t rAddr, uint16_t val, bool check, uint16_t slave_addr = 0xFFFF);
+    uint16_t receive(uint8_t *resp, uint16_t len);
+    bool checkCRC(const uint8_t *buf, uint16_t len);
+    void setCRC(uint8_t *buf, uint16_t len);
+    uint16_t CRC16(const uint8_t *data, uint16_t len);
 };
 
 #endif // JSYMK333_H
