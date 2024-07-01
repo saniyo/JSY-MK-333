@@ -6,9 +6,6 @@
 
 JSYMK333 meter(Serial2, 9600, SERIAL_8N1, RX_PIN, TX_PIN);
 
-unsigned long previousMillis = 0;
-const long interval = 1000; // interval at which to read values (milliseconds)
-
 void setup() {
     Serial.begin(115200);
     while (!Serial) { ; } // wait for serial port to connect
@@ -22,21 +19,17 @@ void setup() {
 }
 
 void loop() {
-    unsigned long currentMillis = millis();
+    Serial.print("A phase voltage: ");
+    Serial.print(meter.readVoltageA());
+    Serial.println(" V");
 
-    if (currentMillis - previousMillis >= interval) {
-        previousMillis = currentMillis;
+    Serial.print("B phase voltage: ");
+    Serial.print(meter.readVoltageB());
+    Serial.println(" V");
 
-        Serial.print("A phase voltage: ");
-        Serial.print(meter.readVoltageA());
-        Serial.println(" V");
+    Serial.print("C phase voltage: ");
+    Serial.print(meter.readVoltageC());
+    Serial.println(" V");
 
-        Serial.print("B phase voltage: ");
-        Serial.print(meter.readVoltageB());
-        Serial.println(" V");
-
-        Serial.print("C phase voltage: ");
-        Serial.print(meter.readVoltageC());
-        Serial.println(" V");
-    }
+    delay(1000); // read every second
 }
